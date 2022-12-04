@@ -1,6 +1,7 @@
 var currentQuestionIndex = 0; 
 
 var timer = document.querySelector('#time');
+var timeLeft = timer.innerHTML;
 var timerWrapper = document.querySelector('.timer');
 
 var feedback = document.querySelector('#feedback');
@@ -20,6 +21,9 @@ var finalScore = document.querySelector('#final-score');
 var intials = document.querySelector('#initials');
 var submit = document.querySelector('#submit');
 var highscores = [];
+if (JSON.parse(localStorage.getItem('user_scores')) != null) {
+    var highscores = JSON.parse(localStorage.getItem('user_scores'));
+}
 
 
 function startQuiz(){
@@ -35,13 +39,16 @@ function startQuiz(){
 }
 
 function countdown() {
-    var timeLeft = 60;
-    timer.innerText = timeLeft;
+    if (timeLeft == '0'){
+        timeLeft = 60;
+    }else{
+        var slicer = (timeLeft*1)-10;
+        timeLeft = slicer; 
+        clearInterval (timeInterval);
+    }
     var timeInterval = setInterval(function () {
-    
       timeLeft--;
       timer.innerText = timeLeft;
-
       if (timeLeft === 0) {
         clearInterval (timeInterval);
         endQuiz();
@@ -50,34 +57,32 @@ function countdown() {
     }, 1000);
 }
 
-function sliceTimer(){
-    var slicer = (timer.innerText*1)-10; 
-    var timeLeft = slicer;
-    timer.innerText = timeLeft;
-    var timeInterval = setInterval(function () {
-    
-        timeLeft--;
-        timer.innerText = '';
-        timer.innerText = timeLeft;
-  
-        if (timeLeft === 0) {
-          clearInterval (timeInterval);
-          endQuiz();
-      }
-      
-      }, 1000);
-}
 
+// function countdown() {
+//     var timeLeft = 60;
+//     timer.innerText = timeLeft;
+//     var timeInterval = setInterval(function () {
+    
+//       timeLeft--;
+//       timer.innerText = timeLeft;
+
+//       if (timeLeft === 0) {
+//         clearInterval (timeInterval);
+//         endQuiz();
+//     }
+    
+//     }, 1000);
+// }
 
 
 function checkAnswer(event){
-        console.log(event.target.dataset.correct);
         feedback.classList.remove('hide');
         if(event.target.dataset.correct == 'true'){
             var audioCorrect = new Audio('assets/sfx/correct.wav');
             audioCorrect.play();
             feedback.innerText = 'Correct answer';
         }else{
+            countdown()
             var audioWrong = new Audio('assets/sfx/incorrect.wav');
             audioWrong.play();
             feedback.innerText = 'Wrong answer';
@@ -128,7 +133,6 @@ function createScores(){
         score: `${userScore}` 
     };
     highscores.push(scoreObj);
-    console.log(highscores);
     localStorage.setItem('user_scores', JSON.stringify(highscores));
     window.location.href = "highscores.html";
 }

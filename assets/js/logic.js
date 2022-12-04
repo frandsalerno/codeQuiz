@@ -17,7 +17,7 @@ var choicesList = document.querySelector('#choices');
 var endScreen = document.querySelector('#end-screen');
 var finalScore = document.querySelector('#final-score');
 
-var intials = document.querySelector('#final-score');
+var intials = document.querySelector('#initials');
 var submit = document.querySelector('#submit');
 var highscores = [];
 
@@ -67,14 +67,19 @@ function sliceTimer(){
       
       }, 1000);
 }
-    
+
+
 
 function checkAnswer(event){
         console.log(event.target.dataset.correct);
         feedback.classList.remove('hide');
         if(event.target.dataset.correct == 'true'){
+            var audioCorrect = new Audio('assets/sfx/correct.wav');
+            audioCorrect.play();
             feedback.innerText = 'Correct answer';
         }else{
+            var audioWrong = new Audio('assets/sfx/incorrect.wav');
+            audioWrong.play();
             feedback.innerText = 'Wrong answer';
         }
         setTimeout(function(){
@@ -117,12 +122,15 @@ function endQuiz(){
 
 function createScores(){
     var userScore = finalScore.innerText;
-    var user = intials.innerText;
+    var user = intials.value;
     var scoreObj = {
         user: `${user}`,
         score: `${userScore}` 
-    }
+    };
     highscores.push(scoreObj);
+    console.log(highscores);
+    localStorage.setItem('user_scores', JSON.stringify(highscores));
+    window.location.href = "highscores.html";
 }
 
 

@@ -74,6 +74,12 @@ function countdown() {
 //     }, 1000);
 // }
 
+// function slicer(){
+//     var slicer = (timeLeft*1)-10;
+//     timeLeft = slicer; 
+//     console.log(timeLeft);
+// }
+
 
 function checkAnswer(event){
         feedback.classList.remove('hide');

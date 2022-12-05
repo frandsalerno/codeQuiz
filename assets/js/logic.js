@@ -36,6 +36,7 @@ function startQuiz(){
 
     //show questions wrapper when everything is ready
     questionWrapper.classList.remove('hide');
+    timerWrapper.classList.remove('hide');
 }
 
 function countdown() {

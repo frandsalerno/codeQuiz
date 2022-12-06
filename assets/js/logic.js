@@ -1,7 +1,7 @@
 var currentQuestionIndex = 0; 
 
 var timer = document.querySelector('#time');
-var timeLeft = timer.innerHTML;
+var timeLeft = 60;
 var timerWrapper = document.querySelector('.timer');
 
 var feedback = document.querySelector('#feedback');
@@ -15,6 +15,7 @@ var questionWrapper = document.querySelector('#questions');
 var questionTitle = document.querySelector('#question-title');
 var choicesList = document.querySelector('#choices');
 
+var quizOver = false;
 var endScreen = document.querySelector('#end-screen');
 var finalScore = document.querySelector('#final-score');
 
@@ -40,17 +41,10 @@ function startQuiz(){
 }
 
 function countdown() {
-    if (timeLeft == '0'){
-        timeLeft = 60;
-    }else{
-        var slicer = (timeLeft*1)-10;
-        timeLeft = slicer; 
-        clearInterval (timeInterval);
-    }
     var timeInterval = setInterval(function () {
       timeLeft--;
       timer.innerText = timeLeft;
-      if (timeLeft === 0) {
+      if (timeLeft == 0) {
         clearInterval (timeInterval);
         endQuiz();
     }
@@ -59,46 +53,33 @@ function countdown() {
 }
 
 
-// function countdown() {
-//     var timeLeft = 60;
-//     timer.innerText = timeLeft;
-//     var timeInterval = setInterval(function () {
-    
-//       timeLeft--;
-//       timer.innerText = timeLeft;
-
-//       if (timeLeft === 0) {
-//         clearInterval (timeInterval);
-//         endQuiz();
-//     }
-    
-//     }, 1000);
-// }
-
-// function slicer(){
-//     var slicer = (timeLeft*1)-10;
-//     timeLeft = slicer; 
-//     console.log(timeLeft);
-// }
-
-
 function checkAnswer(event){
-        feedback.classList.remove('hide');
+        feedback.classList.remove('opacityzero');
         if(event.target.dataset.correct == 'true'){
             var audioCorrect = new Audio('assets/sfx/correct.wav');
             audioCorrect.play();
             feedback.innerText = 'Correct answer';
         }else{
-            countdown()
             var audioWrong = new Audio('assets/sfx/incorrect.wav');
             audioWrong.play();
             feedback.innerText = 'Wrong answer';
+            if (timeLeft-10 < 0){
+                quizOver = true;
+               setTimeout(function(){
+                   timeLeft = 0;
+                   endQuiz();
+               }, 500);
+            }else{
+                timeLeft = timeLeft-10;
+            }
         }
         setTimeout(function(){
-            feedback.classList.add('hide');
-          }, 400);
+            feedback.classList.add('opacityzero');
+          }, 300);
 
-        nextQuestion();
+        if (!quizOver){
+            nextQuestion();
+        }
 }
 
 function nextQuestion(){
@@ -126,7 +107,7 @@ function nextQuestion(){
 }
 
 function endQuiz(){
-    finalScore.innerText= (timer.innerText);
+    finalScore.innerText= timeLeft;
     timerWrapper.classList.add('hide');
     questionWrapper.classList.add('hide');
     endScreen.classList.remove('hide');

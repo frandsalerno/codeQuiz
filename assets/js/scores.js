@@ -2,7 +2,6 @@
 
 var usersScores = JSON.parse(localStorage.getItem('user_scores'));
 
-
 var scoresContainer = document.querySelector('#highscores');
 
 if (usersScores){

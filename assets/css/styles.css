@@ -61,11 +61,12 @@ ol {
 li {
   padding: 5px;
   list-style: decimal inside none;
+  border-bottom: 0.5px solid #000;
 }
 
-li:nth-child(odd) {
+/* li:nth-child(odd) {
   background-color: #f3edfc;
-}
+} */
 
 .wrapper {
   max-width: 600px;
@@ -73,6 +74,10 @@ li:nth-child(odd) {
 
 .hide {
   display: none;
+}
+
+.opacityzero{
+  opacity: 0;
 }
 
 .start {
@@ -106,7 +111,6 @@ li:nth-child(odd) {
 .feedback {
   font-style: italic;
   font-size: 120%;
-  margin-top: 20px;
   padding-top: 10px;
   color: gray;
   border-top: 2px solid #ccc;
@@ -121,4 +125,6 @@ li:nth-child(odd) {
   color: white;
   padding: 5px;
   border-radius: 4px;
+  width: 80px;
+  text-align: center;
 }
